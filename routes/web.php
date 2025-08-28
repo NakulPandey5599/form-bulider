@@ -26,7 +26,7 @@ Route::middleware('auth')->group(function () {
 
 
 Route::get('/form-builder', [FormController::class, 'index']);
-Route::post('/form-builder/save', [FormController::class, 'save'])->name('form.save');
+Route::post('/form-builder/save', [FormController::class, 'store'])->name('form.store');
 
 
 require __DIR__.'/auth.php';

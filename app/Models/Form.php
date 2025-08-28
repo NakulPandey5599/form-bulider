@@ -6,9 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Form extends Model
 {
-    protected $fillable = ['title', 'fields'];
+    protected $fillable = ['title','slug','schema','is_active'];
+    protected $casts = ['schema' => 'array', 'is_active' => 'boolean'];
 
-    protected $casts = [
-        'fields' => 'array',
-    ];
+    public function submissions() {
+        return $this->hasMany(FormSubmission::class);
+    }
 }
