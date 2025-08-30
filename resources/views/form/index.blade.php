@@ -52,6 +52,7 @@
                     <button id="saveFormBtn" type="submit" class="btn btn-success btn-sm float-end me-4">Save Form</button>
                   </div>
                 </div>
+                
                 <div class="mt-4">
                     <input id="form_title" class="form-control mb-2" placeholder="Form Name">
                 </div>

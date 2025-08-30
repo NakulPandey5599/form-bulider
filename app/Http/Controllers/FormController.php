@@ -20,24 +20,53 @@ class FormController extends Controller
     {
         $request->validate([
             'title' => 'required|string|max:255',
-            'slug' => 'nullable|string|max:255|un
-            ique:forms,slug',
+            'slug' => 'nullable|string|max:255|unique:forms,slug',
             'schema' => 'required|array'
         ]);
 
-        // dd($request->schema);   
+        //  $schemaArray = is_string($request->schema)
+        //     ? json_decode($request->schema, true)
+        //     : $request->schema;
+
+        // // Ensure it has the 'fields' wrapper like your builder produces
+        // if (!isset($schemaArray['fields'])) {
+        //     $schemaArray = ['fields' => $schemaArray];
+        // }
 
         $slug = $request->slug ?: Str::slug($request->title) . '-' . random_int(1000, 9999);
 
         $form = Form::create([
             'title' => $request->title,
-            'slug' => $slug,
+            'slug' => (string) Str::uuid(),
             'schema' => $request->schema
         ]);
+         $link = route('form.public', $form->slug);
 
+    // return redirect()->back()->with('form_link', $link);
         return response()->json([
             'message' => 'Form saved',
             'form' => $form
         ]);
     }
+
+    public function preview($id)
+    {   
+    $form = Form::findOrFail($id);
+    
+    return view('form.preview', [
+        'form' => $form,
+        'schema' => $form->schema // already array
+    ]);
+
+    }
+
+    public function public($slug)
+    {
+        $form = Form::where('slug', $slug)->firstOrFail();
+        $schema = $form->schema;
+
+        return view('form.preview', compact('form', 'schema'));
+    }
+
+
 }

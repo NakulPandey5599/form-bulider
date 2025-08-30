@@ -12,4 +12,8 @@ class Form extends Model
     public function submissions() {
         return $this->hasMany(FormSubmission::class);
     }
+
+     public function getRouteKeyName(): string {
+        return 'slug';
+    }
 }
